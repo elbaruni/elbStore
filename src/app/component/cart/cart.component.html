@@ -1,0 +1,46 @@
+
+<div *ngIf="cart.length; else noCart" class="cart-container">
+  <div class="cart-item-details">
+      <div *ngFor="let cartProduct of cart" class="cart-item">
+          <img class="" src='{{cartProduct.url}}'>
+          <div class="cart-panel">
+              <div class="product-item-detail">{{ cartProduct.name}}</div>
+              <div class="product-item-detail">$ {{ cartProduct.price}}</div>
+              <div class="product-item-detail">
+                <label>Quantity:</label>
+                <input
+                  type="number"
+                  class="number-input"
+                  [(ngModel)]="cartProduct.quantity"
+                  (ngModelChange)="updateCartItem(cartProduct,$event)"
+                  min="1"
+                />
+              </div>
+              <div class="product-item-detail" style="margin-top:10px ;">
+                  <button (click)="removeFromCart(cartProduct)"  class="product-item-detail btn btn-primary">Remove</button>
+              </div>
+          </div>
+      </div>
+      <div class="cart-item"><b>Total Price: ${{ totalPrice }}</b></div>
+  </div>
+
+    <form  #form="ngForm" (ngSubmit)="checkoutSuccess()"  >
+      <h1> Checkout </h1>
+      <label>Full Name: </label><br />
+      <input type='text' name='fullName' required minlength="3" placeholder="Enter Your Full Name" class="form-margin" [(ngModel)]="fullName" >
+      <br />
+      <label>Address: </label><br />
+      <input type='text' name='address' required  minlength="6" placeholder="Enter Address" class="form-margin" [(ngModel)]="address" >
+      <br />
+      <label>Credit Card Number: </label><br />
+      <input type='text' name='creditCard' required  minlength="16" maxlength="16" placeholder="(16-digit number)" class="form-margin" [(ngModel)]="creditCard">
+      <br />
+      <input [disabled]="form.invalid" type='submit' value="Submit" class="btn btn-primary"  />
+    </form>
+
+</div>
+<ng-template #noCart>
+  <div class="empty-cart-message">
+  Cart is Empty! Please, <a routerLink="/"> add product to cart</a>.
+  </div>
+</ng-template>
