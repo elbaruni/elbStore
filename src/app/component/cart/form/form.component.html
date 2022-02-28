@@ -1,13 +1,40 @@
 <form  #form="ngForm" (ngSubmit)="onSubmit()"  >
   <h1> Checkout </h1>
   <label>Full Name: </label><br />
-  <input type='text' name='fullName' required minlength="3" placeholder="Enter Your Full Name" class="form-margin" [(ngModel)]="fullName" >
+  <input type='text' name='fullName' required minlength="3" placeholder="Enter Your Full Name"
+  class="form-margin" [(ngModel)]="fullName" #checkOutFullName="ngModel">
+  <div *ngIf="checkOutFullName.invalid && checkOutFullName.dirty" class="error-message">
+    <div *ngIf="checkOutFullName.hasError('required')">
+      Please provide your full name.
+    </div>
+    <div *ngIf="checkOutFullName.hasError('minlength')">
+      The full name  must contain at least 3 characters.
+    </div>
+  </div>
   <br />
   <label>Address: </label><br />
-  <input type='text' name='address' required  minlength="6" placeholder="Enter Address" class="form-margin" [(ngModel)]="address" >
+  <input type='text' name='address' required  minlength="6" placeholder="Enter Address"
+   class="form-margin" [(ngModel)]="address" #checkOutAddress="ngModel">
+  <div *ngIf="checkOutAddress.invalid && checkOutAddress.dirty" class="error-message">
+    <div *ngIf="checkOutAddress.hasError('required')">
+      Please provide your full name.
+    </div>
+    <div *ngIf="checkOutAddress.hasError('minlength')">
+      The full name  must contain at least 6 characters.
+    </div>
+  </div>
   <br />
   <label>Credit Card Number: </label><br />
-  <input type='text' name='creditCard' required  minlength="16" maxlength="16" placeholder="(16-digit number)" class="form-margin" [(ngModel)]="creditCard">
+  <input type='text' name='creditCard' required  pattern="[0-9]{16}" placeholder="(16-digit number)"
+   class="form-margin" [(ngModel)]="creditCard" #checkOutCredit="ngModel">
+  <div *ngIf="checkOutCredit.invalid && checkOutCredit.dirty" class="error-message">
+    <div *ngIf="checkOutCredit.hasError('required')">
+      Please provide your Credit card.
+    </div>
+    <div *ngIf="checkOutCredit.hasError('pattern')">
+      Credit Card must be 16 digits
+    </div>
+  </div>
   <br />
   <input [disabled]="form.invalid" type='submit' value="Submit" class="btn btn-primary"  />
 </form>
