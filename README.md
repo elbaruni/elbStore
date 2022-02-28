@@ -19,6 +19,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
 
 ## Rotues 
 - lists all products `http://localhost:4200/` 
-- view product details by id `products/details/:id`
+- view product details by id `http://localhost:4200/products/details/:id`
 - view the cart  `http://localhost:4200/cart`
-- success checkout `success/:fullName/:totalPrice`
+- success checkout `http://localhost:4200/success/:fullName/:totalPrice`
