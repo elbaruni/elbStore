@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/service/cart.service';
 import { CartProduct } from 'src/app/models/cartProduct';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModelComponent } from '../model/model.component';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -10,10 +12,12 @@ import { CartProduct } from 'src/app/models/cartProduct';
 export class CartComponent implements OnInit {
   cart: CartProduct[] = [];
   totalPrice: number = 0;
-  fullName: string = '';
-  address: string = '';
-  creditCard: string = '';
-  constructor(private cartService: CartService, private router: Router) {}
+
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.cart = this.cartService.getCartProducts();
@@ -23,6 +27,9 @@ export class CartComponent implements OnInit {
     this.cartService.removeProductFromCart(cartProduct);
     this.cart = this.cartService.getCartProducts();
     this.totalPrice = this.cartService.getTotalPrice();
+    const modalRef = this.modalService.open(ModelComponent);
+    modalRef.componentInstance.title = 'Alert';
+    modalRef.componentInstance.message = `${cartProduct.name} removed from the cart `;
   }
   updateCartItem(cartProduct: CartProduct, $event: any): void {
     const _quantity: number = cartProduct.quantity - $event;
@@ -31,8 +38,8 @@ export class CartComponent implements OnInit {
     this.totalPrice = this.cartService.getTotalPrice();
   }
 
-  checkoutSuccess(): void {
+  checkoutSuccess(fullName: string): void {
     this.cartService.clearCart();
-    this.router.navigateByUrl(`success/${this.fullName}/${this.totalPrice}`);
+    this.router.navigateByUrl(`success/${fullName}/${this.totalPrice}`);
   }
 }
